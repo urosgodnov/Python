@@ -1,0 +1,171 @@
+---
+title: "Basic reading and writing"
+author: "Uros Godnov"
+date: ""
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+use_python("C:/Users/Godnov/Anaconda3/python.exe")
+```
+
+
+## Basic reading of text files
+
+- text files have EOL operator (usually comma or newline seperator)
+- open() function
+- ***file_object  = open(“filename”, “mode”)***
+- ***mode*** tells the direction of operation: reading or writing
+
+## Mode
+
+- *r*: read mode which is used when the file is only being read 
+- *w*: write mode which is used to edit and write new information to the file (any existing files with the same name will be erased when this mode is activated) 
+- *a*: appending mode, which is used to add new data to the end of the file; that is new information is automatically amended to the end 
+- *r+*: Special read and write mode, which is used to handle both actions when working with a file 
+
+## Creating a new file 
+
+- create a new txt file in your working directory
+- name it newFile.txt
+- add new line manually: This is first line!
+- save the file
+
+## Writing to an existing file
+
+- use the following code and then check the file. What happend?
+
+```{python}
+
+newF = open("./Excercises/newFile.txt","w") 
+
+newF.write("This is the second line!")
+
+newF.close()
+```
+
+## Using append
+
+- execute the following code and inspect the file. What do you notice?
+
+```{python}
+
+newF = open("./Excercises/newFile.txt","a") 
+
+newF.write("This is the third line!")
+
+newF.write("This is the forth line!")
+
+newF.close()
+```
+
+
+## Using append with new line character
+
+- execute the following code and inspect the file. How about now?
+
+```{python}
+
+newF = open("./Excercises/newFile.txt","a") 
+
+newF.write("This is the fifth line!\n")
+
+newF.write("This is the sixt line!\n")
+
+newF.close()
+```
+
+## Excercise
+
+- create a new file called writeExcercise.txt
+- add 5 fows, each should be in a new line
+- try adding additional 95 rows with a for loop
+
+```{python include=FALSE}
+
+newF = open("./Excercises/writeExcercise.txt","a") 
+for i in range(100):
+  newF.write("This is the "+ str(i) +" line!\n")
+
+newF.close()
+
+```
+
+## Reading lines
+
+- readline() - reads current row
+- readline(5) - reads 5 characters from the current row
+- readlines() - read whole file
+- open previously created file (writeExcercises) 
+
+```{python}
+
+newF= open("./Excercises/writeExcercise.txt","r")
+
+print(newF.readline())
+
+print(newF.readline(4))
+
+newF.close()
+
+```
+
+## Reading n lines
+
+- we will use with and for loop 
+
+```{python}
+
+with open("./Excercises/writeExcercise.txt","r") as f:
+  for line in range(5):
+    print(f.readline())
+
+f.close()
+
+```
+
+## Excercise
+
+- solve "Reading n lines" with list comprehension
+
+```{python hide=TRUE, echo=FALSE}
+with open("./Excercises/writeExcercise.txt","r") as f:
+  [print (f.readline()) for line in range(5)]
+
+f.close()
+```
+
+
+## Reading txt file to a list
+
+ - use list comprehension
+ - display the 10th element of the list
+
+```{python}
+
+with open("./Excercises/writeExcercise.txt","r") as f:
+    lines = [line for line in f.readlines()]
+    
+print(lines[9])
+
+f.close()
+```
+
+
+## Excercise
+
+- read writeExcercise to a list
+- split the 10th element to words and print them
+
+```{python hide=TRUE, echo=FALSE}
+
+with open("./Excercises/writeExcercise.txt","r") as f:
+    lines = [line for line in f.readlines()]
+    
+print(lines[9].split())
+
+f.close()
+```
+
