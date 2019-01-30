@@ -1,0 +1,11 @@
+1. Write a Python function to find the Max of three numbers.
+2. Write a Python function to sum all the numbers in a list.
+   Sample List : (8, 2, 3, 0, 7)
+   Expected Output : 20
+3. Write a Python function to multiply all the numbers in a list.
+   Sample List : (8, 2, 3, -1, 7)
+   Expected Output : -336 
+4. Write a Python function to check whether a number is in a given range.
+5. Write a Python program to print the even numbers from a given list.
+   Sample List : [1, 2, 3, 4, 5, 6, 7, 8, 9] 
+   Expected Result : [2, 4, 6, 8]
