@@ -3341,6 +3341,17 @@ print(gapminder.head())</pre>
 
 <p>Change &ldquo;gdppercap&rdquo; column to string column and answer:<br/> - number of rows begining with &ldquo;7&rdquo; (134)<br/> - have &ldquo;7&rdquo; as the second character (149)<br/> - have &ldquo;7&rdquo; as next to the last character (131)<br/> - start and end with 7 (15)<br/> - start or end with 7 (305)<br/></p>
 
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  id="solution">
+
+<pre class = 'prettyprint lang-python'>gapminder[&quot;string&quot;]=gapminder[&quot;gdpPercap&quot;].astype(str)
+gapminder[&quot;string&quot;].str.startswith(&quot;7&quot;).sum()
+sum(gapminder[&quot;string&quot;].str[1]==&quot;7&quot;)
+sum(gapminder[&quot;string&quot;].str[-2]==&quot;7&quot;)
+sum(gapminder[&quot;string&quot;][(gapminder[&quot;string&quot;].str.startswith(&quot;7&quot;)) 
+&amp; (gapminder[&quot;string&quot;].str.endswith(&quot;7&quot;))].astype(bool))
+sum(gapminder[&quot;string&quot;][(gapminder[&quot;string&quot;].str.startswith(&quot;7&quot;))
+| (gapminder[&quot;string&quot;].str.endswith(&quot;7&quot;))].astype(bool))</pre>
+
 </article></slide><slide class=""><hgroup><h2>Built-in String Methods (3)</h2></hgroup><article  id="built-in-string-methods-3" class="smaller">
 
 <ul>
@@ -3449,14 +3460,14 @@ for i in range(l)])
 print(rString)
 # Create Series of 3 random strings</pre>
 
-<pre >## $Au%E^</pre>
+<pre >## Le^p6kl|o    &amp;a</pre>
 
 <pre class = 'prettyprint lang-python'>print(pd.Series(&quot;&quot;.join([st.printable[int(rd.randint(1,99))] 
 for i in range(rd.randint(1,30))]) for i in range(3)))</pre>
 
-<pre >## 0      24{R;-^aw%K{2p(aN&gt;DOzu%kds
-## 1    {3k,\t787,(\t5D\nibhvb+\t(Jb
-## 2                     V2y]fFN\r6
+<pre >## 0                /c\rL1kDueke8
+## 1                 k{YdVE12\ns
+## 2    MQnokmjM&amp;o&gt;VNk[9G[%kp`z@B
 ## dtype: object</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab-4">
@@ -3465,7 +3476,7 @@ for i in range(rd.randint(1,30))]) for i in range(3)))</pre>
 
 <p>Add additional column &ldquo;Column statistics&rdquo; and apply HowMany function. Display first 3 rows.</p>
 
-</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  id="solution" class="smaller">
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  id="solution-1" class="smaller">
 
 <pre class = 'prettyprint lang-python'>result=pd.DataFrame({&#39;ID&#39;: range(0,100)})
 result[&quot;String&quot;]=pd.Series(&quot;&quot;.join([st.printable[int(rd.randint(1,99))] 
@@ -3473,10 +3484,10 @@ for i in range(rd.randint(1,20))]) for i in range(100))
 result[&quot;Column statistics&quot;]=result[&quot;String&quot;].apply(howMany)
 print(result.head(3))</pre>
 
-<pre >##    ID               String Column statistics
-## 0   0   e\tK&lt;n{V\tg}&#39;`}AiK     C:8, D:0, S:2
-## 1   1  N\tK&quot;J@(=G*;5dY&lt;NEx     C:9, D:1, S:1
-## 2   2              B\caLpo     C:6, D:0, S:0</pre></article></slide>
+<pre >##    ID     String Column statistics
+## 0   0     y2.pUk     C:4, D:1, S:0
+## 1   1        tCJ     C:3, D:0, S:0
+## 2   2  ixFNKH*w     C:7, D:0, S:1</pre></article></slide>
 
 
   <slide class="backdrop"></slide>
