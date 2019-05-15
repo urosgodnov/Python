@@ -4,7 +4,6 @@
   <title>Pandas</title>
 
   <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
   <meta name="generator" content="pandoc" />
 
@@ -258,7 +257,6 @@ background: black;
 }
 
 slides > slide {
-display: none;
 font-family: 'Open Sans', Arial, sans-serif;
 font-size: 26px;
 color: #797979;
@@ -279,17 +277,19 @@ transition: all 0.6s ease-in-out;
 }
 
 slides > slide.far-past {
-display: none;
 }
 
 slides > slide.past {
-display: block;
 opacity: 0;
 }
 
 slides > slide.current {
 display: block;
 opacity: 1;
+z-index: 1;
+}
+slides > slide:not(.current) {
+z-index: 0;
 }
 
 slides > slide.current .auto-fadein {
@@ -304,13 +304,11 @@ background-size: 100% 100%;
 }
 
 slides > slide.next {
-display: block;
 opacity: 0;
 pointer-events: none;
 }
 
 slides > slide.far-next {
-display: none;
 }
 
 slides > slide.dark {
@@ -382,8 +380,6 @@ width: 1100px;
 
 slides.layout-widescreen > slide.far-past,
 slides.layout-faux-widescreen > slide.far-past {
-display: block;
-display: none;
 -webkit-transform: translate(-2260px);
 -moz-transform: translate(-2260px);
 -ms-transform: translate(-2260px);
@@ -417,8 +413,6 @@ pointer-events: none;
 
 slides.layout-widescreen > slide.far-next,
 slides.layout-faux-widescreen > slide.far-next {
-display: block;
-display: none;
 -webkit-transform: translate(2260px);
 -moz-transform: translate(2260px);
 -ms-transform: translate(2260px);
@@ -1349,6 +1343,13 @@ opacity: 1;
 
 .overview .slide-area {
 display: none;
+}
+slides > slide {
+background: linear-gradient(#ffffff, #ffffff 85%, #e6e6e6);
+background-color: white;
+}
+slides > slide {
+opacity: 0;
 }
 @media print {
 
@@ -3094,6 +3095,10 @@ if (document.readyState !== "loading" &&
       transition: opacity 0.6s ease-in 0.4s;
       opacity: 0;
     }
+/* https://github.com/ropensci/plotly/pull/524#issuecomment-468142578 */
+slide:not(.current) .plotly.html-widget{
+  display: block;
+}
 
   </style>
 
@@ -3143,8 +3148,10 @@ if (document.readyState !== "loading" &&
 <li>importing from excel</li>
 </ul>
 
-<pre class = 'prettyprint lang-python'>import pandas as pd
+<pre class = 'prettyprint lang-python'>
+import pandas as pd
 import numpy as np
+
 data=pd.read_excel(&quot;./Lab/Datasets/cars.xlsx&quot;)
 print(data.head())</pre>
 
@@ -3161,7 +3168,8 @@ print(data.head())</pre>
 <li>df.to_filetype(filename)</li>
 </ul>
 
-<pre class = 'prettyprint lang-python'>data.to_csv(&quot;./Lab/Datasets/CarsCSV.csv&quot;)</pre>
+<pre class = 'prettyprint lang-python'>
+data.to_csv(&quot;./Lab/Datasets/CarsCSV.csv&quot;)</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab">
 
@@ -3227,7 +3235,23 @@ print(data.head())</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab-3">
 
-<p>Calculate players’ mean height and mean weight by birthState for players, who were born in USA after 1950. Print only birthState, mean height and weight sorted by birthState DESC. HINT: df.mean() returns mean for all columns. Rename columns to State, AverageW and AverageH.</p>
+<ul>
+<li>Calculate players’ mean height and mean weight by birthState for players, who were born in USA after 1950.</li>
+<li>Print only birthState, mean height and weight sorted by birthState DESC.</li>
+<li>HINT: df.mean() returns mean for all columns.</li>
+<li>Rename columns to State, AverageW and AverageH.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  class="smaller" id="solution">
+
+<ul>
+<li>columns=[&ldquo;birthCountry&rdquo;,&ldquo;birthState&rdquo;,&ldquo;birthYear&rdquo;,&ldquo;height&rdquo;,&ldquo;weight&rdquo;]</li>
+<li>selecting columns:df1=df[columns]</li>
+<li>selecting rows: df1=df1[(df[&ldquo;birthCountry&rdquo;]==&ldquo;USA&rdquo;) &amp; (df[&ldquo;birthYear&rdquo;]&gt;1950)]</li>
+<li>grouping and calculating mean: df1=df1.groupby(&ldquo;birthState&rdquo;).mean().iloc[:,1:3]</li>
+<li>sorting: df1=df1.sort_values(&ldquo;birthState&rdquo;,ascending=False)</li>
+<li>renaming: df1.rename(columns={&ldquo;height&rdquo;:&ldquo;AVheight&rdquo;,&ldquo;weight&rdquo;:&ldquo;AVweight&rdquo;})</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Data Cleaning (1)</h2></hgroup><article  class="smaller" id="data-cleaning-1">
 
@@ -3243,7 +3267,20 @@ print(data.head())</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab-4">
 
-<p>Show 10 rows of Master DF, where weight is null. Replace null values in weight column with average. Print the average value and the 20th row from Master DF.</p>
+<ul>
+<li>Show 10 rows of Master DF, where weight is null.</li>
+<li>Replace null values in weight column with average.</li>
+<li>Print the average value and the 20th row from Master DF.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  class="smaller" id="solution-1">
+
+<ul>
+<li>selecting columns: df[df.weight.isnull()].head(10)</li>
+<li>calculating average: averageW=df[&ldquo;weight&rdquo;].mean()</li>
+<li>replacing with inplace: df.weight.fillna(averageW, inplace=True)</li>
+<li>printing: df.iloc[20,:]</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Data Cleaning (2)</h2></hgroup><article  class="smaller" id="data-cleaning-2">
 
@@ -3271,7 +3308,22 @@ print(data.head())</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab-5">
 
-<p>Show 10 rows of Master DF, where height is null. Remember indexes of the first 2 rows. Use linear and cubic interpolation. Show 2 rows that you remembered.</p>
+<ul>
+<li>Show 10 rows of Master DF, where height is null.</li>
+<li>Remember indexes of the first 2 rows.</li>
+<li>Use linear and cubic interpolation. Show 2 rows that you remembered.</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  class="smaller" id="solution-2">
+
+<ul>
+<li>selecting columns: df[df.height.isnull()].head(10)</li>
+<li>indexes: 20, 107</li>
+<li>linear interpolation: df.height.interpolate(&ldquo;linear&rdquo;, inplace=True)</li>
+<li>displaying rows: df.iloc[[20,107],:]</li>
+<li>cubic interpolation: df.height.interpolate(&ldquo;cubic&rdquo;, inplace=True)</li>
+<li>displaying rows: df.iloc[[20,107],:]</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Data Cleaning (3)</h2></hgroup><article  class="smaller" id="data-cleaning-3">
 
@@ -3291,7 +3343,26 @@ print(data.head())</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab-6">
 
-<p>Take birthCountry, height and weight from the Master DF. Apply linear interpolation to height and cubic to weight. Calculate: - tranform weight from pounds to kg and height from inches to meters - BMI: show 10 rows - average BMI index by bithCoutry, sort by birthCountry</p>
+<ul>
+<li>Take birthCountry, height and weight from the Master DF.</li>
+<li>Apply linear interpolation to height and cubic to weight.</li>
+<li>Tranform weight from pounds to kg and height from inches to meters</li>
+<li>Calculate BMI and show 10 rows</li>
+<li>Calculate average BMI index by birthCountry, sort by birthCountry</li>
+</ul>
+
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  class="smaller" id="solution-3">
+
+<ul>
+<li>df.weight.interpolate(&ldquo;cubic&rdquo;, inplace=True)</li>
+<li>df.height.interpolate(&ldquo;linear&rdquo;, inplace=True)</li>
+<li>df[&ldquo;weightKG&rdquo;]=df.weight/2.2</li>
+<li>df[&ldquo;heightCM&rdquo;]=df.height*2.54</li>
+<li>df[&ldquo;BMI&rdquo;]=df[&ldquo;weightKG&rdquo;]/(df[&ldquo;heightCM&rdquo;]/100*df[&ldquo;heightCM&rdquo;]/100)</li>
+<li>df1=df[[&ldquo;birthCountry&rdquo;,&ldquo;weightKG&rdquo;,&ldquo;heightCM&rdquo;,&ldquo;BMI&rdquo;]]</li>
+<li>df1=df1.groupby(&ldquo;birthCountry&rdquo;).mean()</li>
+<li>df1.sort_values(&ldquo;birthCountry&rdquo;)</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Pivoting</h2></hgroup><article  class="smaller" id="pivoting">
 
@@ -3338,7 +3409,10 @@ print(table) </pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab-7">
 
-<p>Take Master DF and keep only rows where birthYear 1954, 1955 and 1956. Show mean, max and min of height and weight by months and by birthYear.</p>
+<ul>
+<li>Take Master DF and keep only rows where birthYear 1954, 1955 and 1956.</li>
+<li>Show mean, max and min of height and weight by months and by birthYear.</li>
+</ul>
 
 </article></slide><slide class=""><hgroup><h2>Merge, join, and concatenate dataframes (1)</h2></hgroup><article  id="merge-join-and-concatenate-dataframes-1">
 
@@ -3386,11 +3460,15 @@ print(table) </pre>
 
 <pre class = 'prettyprint lang-python'>import numpy as np
 import pandas as pd
+
 df1 = pd.DataFrame({&#39;ID&#39;: [1,2,3,4,5,6], &#39;pID&#39; : [21,22,23,24,25,26], 
 &#39;Values1&#39; : [435,33,45,34,57,12]})
+
 df2 = pd.DataFrame({&#39;ID&#39; : [4,4,5], &#39;pid&#39; : [24,25,25], 
 &#39;Values2&#39; : [544, 545, 676]})
+
 result=pd.merge(df1, df2, left_on=[&#39;ID&#39;, &#39;pID&#39;], right_on=[&#39;ID&#39;, &#39;pid&#39;])
+
 print(result)</pre>
 
 <pre >##    ID  pID  Values1  pid  Values2
@@ -3401,19 +3479,90 @@ print(result)</pre>
 
 <p>Join Master.csv with HallOfFame.csv on playerID. Calculate the difference in year between birthYear and Year a player was accepted to a Hall of fame. Show the player(s) (nameFirst, nameLast and differnce) with the highest difference.</p>
 
-</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  id="solution">
+</article></slide><slide class=""><hgroup><h2>Solution</h2></hgroup><article  id="solution-4">
 
 <pre class = 'prettyprint lang-python'>import pandas as pd
+
 df1=pd.read_csv(&quot;./Lab/Datasets/Master.csv&quot;)
 df2=pd.read_csv(&quot;./Lab/Datasets/HallOfFame.csv&quot;)
+
 df=pd.merge(df1, df2, on=&quot;playerID&quot;)
 df=df[[&quot;nameFirst&quot;,&quot;nameLast&quot;, &quot;birthYear&quot;,&quot;yearid&quot;]]
+
 # Excluding NaN values
-df.dropna()
-df[&quot;birthYear&quot;]=df[&quot;birthYear&quot;].astype(int).round(0)
+df.dropna()</pre>
+
+<pre >##      nameFirst   nameLast  birthYear  yearid
+## 0         Hank      Aaron     1934.0    1982
+## 1          Jim     Abbott     1967.0    2005
+## 2         Babe      Adams     1882.0    1937
+## 3         Babe      Adams     1882.0    1938
+## 4         Babe      Adams     1882.0    1939
+## 5         Babe      Adams     1882.0    1942
+## 6         Babe      Adams     1882.0    1945
+## 7         Babe      Adams     1882.0    1946
+## 8         Babe      Adams     1882.0    1947
+## 9         Babe      Adams     1882.0    1948
+## 10        Babe      Adams     1882.0    1949
+## 11        Babe      Adams     1882.0    1950
+## 12        Babe      Adams     1882.0    1951
+## 13        Babe      Adams     1882.0    1952
+## 14        Babe      Adams     1882.0    1953
+## 15        Babe      Adams     1882.0    1954
+## 16        Babe      Adams     1882.0    1955
+## 17       Bobby      Adams     1921.0    1966
+## 18      Sparky      Adams     1894.0    1958
+## 19      Sparky      Adams     1894.0    1960
+## 20      Tommie       Agee     1942.0    1979
+## 21        Rick   Aguilera     1961.0    2006
+## 22        Jack       Aker     1940.0    1980
+## 23       Doyle  Alexander     1950.0    1995
+## 24        Pete  Alexander     1887.0    1936
+## 25        Pete  Alexander     1887.0    1937
+## 26        Pete  Alexander     1887.0    1938
+## 27      Bernie      Allen     1939.0    1979
+## 28        Dick      Allen     1942.0    1983
+## 29        Dick      Allen     1942.0    1985
+## ...        ...        ...        ...     ...
+## 4089        Cy      Young     1867.0    1937
+## 4090      Eric      Young     1967.0    2012
+## 4091       Pep      Young     1907.0    1958
+## 4092      Ross     Youngs     1897.0    1936
+## 4093      Ross     Youngs     1897.0    1937
+## 4094      Ross     Youngs     1897.0    1938
+## 4095      Ross     Youngs     1897.0    1939
+## 4096      Ross     Youngs     1897.0    1942
+## 4097      Ross     Youngs     1897.0    1945
+## 4098      Ross     Youngs     1897.0    1946
+## 4099      Ross     Youngs     1897.0    1947
+## 4100      Ross     Youngs     1897.0    1948
+## 4101      Ross     Youngs     1897.0    1949
+## 4102      Ross     Youngs     1897.0    1949
+## 4103      Ross     Youngs     1897.0    1950
+## 4104      Ross     Youngs     1897.0    1951
+## 4105      Ross     Youngs     1897.0    1952
+## 4106      Ross     Youngs     1897.0    1953
+## 4107      Ross     Youngs     1897.0    1954
+## 4108      Ross     Youngs     1897.0    1955
+## 4109      Ross     Youngs     1897.0    1956
+## 4110      Ross     Youngs     1897.0    1972
+## 4111     Robin      Yount     1955.0    1999
+## 4112       Tom    Zachary     1896.0    1958
+## 4113       Tom    Zachary     1896.0    1960
+## 4114       Pat     Zachry     1952.0    1991
+## 4115     Geoff       Zahn     1945.0    1991
+## 4116      Todd      Zeile     1965.0    2010
+## 4117     Chief     Zimmer     1860.0    1938
+## 4118    Richie       Zisk     1949.0    1989
+## 
+## [4119 rows x 4 columns]</pre>
+
+<pre class = 'prettyprint lang-python'>df[&quot;birthYear&quot;]=df[&quot;birthYear&quot;].astype(int).round(0)
 df[&quot;Difference&quot;]=df[&quot;yearid&quot;]-df[&quot;birthYear&quot;]
 df[&quot;Difference&quot;]=df[&quot;Difference&quot;].astype(int).round(0)
+
 df.sort_values(&quot;Difference&quot;, ascending=False,inplace=True)
+
 print(df.head(1))</pre>
 
 <pre >##      nameFirst nameLast  birthYear  yearid  Difference
