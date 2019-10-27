@@ -3322,7 +3322,52 @@ print(sum(1,2,3,4))</pre>
 
 </article></slide><slide class=""><hgroup><h2>Lab</h2></hgroup><article  id="lab">
 
-<p>Open UserDefinedFunctions.txt and complete the tasks.</p></article></slide>
+<p>Open UserDefinedFunctions.txt and complete the tasks.</p>
+
+</article></slide><slide class=""><hgroup><h2>Lambda functions (1)</h2></hgroup><article  class="smaller" id="lambda-functions-1">
+
+<ul>
+<li>functional programming</li>
+<li>lambda arguments : expression</li>
+</ul>
+
+<pre class = 'prettyprint lang-python'>def adding_10(a):
+  return a+10
+
+print(adding_10(5))</pre>
+
+<pre >## 15</pre>
+
+<pre class = 'prettyprint lang-python'>x=lambda a:a+10
+print(x(5))</pre>
+
+<pre >## 15</pre>
+
+</article></slide><slide class=""><hgroup><h2>Lambda functions (2)</h2></hgroup><article  class="smaller" id="lambda-functions-2">
+
+<pre class = 'prettyprint lang-python'>x = lambda a, b, c : a + b + c
+print(x(5, 6, 2))</pre>
+
+<pre >## 13</pre>
+
+</article></slide><slide class=""><hgroup><h2>Lambda functions (3)</h2></hgroup><article  class="smaller" id="lambda-functions-3">
+
+<pre >lambda &lt;args&gt; : &lt;return Value&gt; if &lt;condition &gt; 
+( &lt;return value &gt; if &lt;condition&gt; else &lt;return value&gt;)</pre>
+
+<pre class = 'prettyprint lang-python'>converter = lambda x : x*2 if x &lt; 10 else (x*3 if x &lt; 20 else x)
+
+print(&#39;convert 5 to : &#39;, converter(5))</pre>
+
+<pre >## convert 5 to :  10</pre>
+
+<pre class = 'prettyprint lang-python'>print(&#39;convert 13 to : &#39;, converter(13))</pre>
+
+<pre >## convert 13 to :  39</pre>
+
+<pre class = 'prettyprint lang-python'>print(&#39;convert 23 to : &#39;, converter(23))</pre>
+
+<pre >## convert 23 to :  23</pre></article></slide>
 
 
   <slide class="backdrop"></slide>
